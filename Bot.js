@@ -1,10 +1,10 @@
 const { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const TOKEN = process.env.MTU3MzM0NTQyOTA3MDgxMTE1Nw.GhAx5A.1FYyEcBoJCfjxT0CnknwEFss3WAkqVRmLvpeYk;
-const CLIENT_ID = process.env.1573345429070811157;
+const TOKEN = process.env.DISCORD_TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -41,14 +41,14 @@ client.on('interactionCreate', async interaction => {
             return interaction.editReply('Please attach a file with the .lua extension');
         }
 
-        const filePath = path.join(__dirname, `temp_${file.name}`);
+        const filePath = path.join(__dirname, `temp_${Date.now()}.lua`);
         
         try {
             const response = await fetch(file.url);
             const buffer = await response.arrayBuffer();
             fs.writeFileSync(filePath, Buffer.from(buffer));
 
-            exec(`node Prometheus-Deobfuscator/bin/pdeobf.js ${filePath}`, (error, stdout, stderr) => {
+            execFile('node', ['Prometheus-Deobfuscator/bin/pdeobf.js', filePath], (error, stdout, stderr) => {
                 if (error) {
                     console.error(error);
                     return interaction.editReply('Deobfuscation error. The file might be corrupted.');
