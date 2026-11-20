@@ -48,18 +48,21 @@ client.on('interactionCreate', async interaction => {
             const buffer = await response.arrayBuffer();
             fs.writeFileSync(filePath, Buffer.from(buffer));
 
-            execFile('node', ['Prometheus-Deobfuscator/bin/pdeobf.js', filePath], (error, stdout, stderr) => {
+            const outPath = filePath + '.out.lua';
+            execFile('node', ['Prometheus-Deobfuscator/bin/pdeobf.js', filePath, '-q', '-o', outPath], (error, stdout, stderr) => {
                 if (error) {
                     console.error(error);
+                    fs.rmSync(filePath, { force: true });
                     return interaction.editReply('Deobfuscation error. The file might be corrupted.');
                 }
 
                 interaction.editReply({ 
                     content: 'Done! Deobfuscation result:', 
-                    files: [{ attachment: Buffer.from(stdout), name: 'deobfuscated.lua' }] 
+                    files: [{ attachment: fs.readFileSync(outPath), name: 'deobfuscated.lua' }] 
                 });
                 
-                fs.unlinkSync(filePath);
+                fs.rmSync(filePath, { force: true });
+                fs.rmSync(outPath, { force: true });
             });
         } catch (err) {
             console.error(err);
