@@ -3,8 +3,8 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const TOKEN = process.env.DISCORD_TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
+const TOKEN = process.env.MTU3MzM0NTQyOTA3MDgxMTE1Nw.GhAx5A.1FYyEcBoJCfjxT0CnknwEFss3WAkqVRmLvpeYk;
+const CLIENT_ID = process.env.1573345429070811157;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
