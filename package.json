@@ -1,9 +1,9 @@
 {
   "name": "deobf-bot",
   "version": "1.0.0",
-  "main": "bot.js",
+  "main": "Bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node Bot.js"
   },
   "dependencies": {
     "discord.js": "^14.0.0"
